@@ -6,41 +6,41 @@ Created on Sun Sep  7 13:33:49 2025
 """
 import pandas as pd
 import matplotlib.pyplot as plt
-def analise_fluxo_transacoes (trasacoes,outPath):
+def analise_fluxo_transacoes (transacoes,outPath):
    
     # Retirada de microsegundos e UTC
-    trasacoes["data_transacao"] = (
-    trasacoes["data_transacao"]
+    transacoes["data_transacao"] = (
+    transacoes["data_transacao"]
     .astype(str)
     .str.split(".").str[0]
     .str.replace(" UTC", "", regex=False))
 
     # Transformar em datetime e deixar como index
-    trasacoes["data_transacao"] = pd.to_datetime(trasacoes["data_transacao"])
-    trasacoes = trasacoes.set_index("data_transacao")
+    transacoes["data_transacao"] = pd.to_datetime(transacoes["data_transacao"])
+    transacoes = transacoes.set_index("data_transacao")
     
     # Nome do dia da semana em português (mais direto que mapear manualmente)
-    trasacoes["dia_semana"] = trasacoes.index.day_name(locale="pt_BR")
+    transacoes["dia_semana"] = transacoes.index.day_name(locale="pt_BR")
     
     # Métrica 1 – quantidade de transações por dia da semana
-    qtd_semana = trasacoes.groupby("dia_semana").size()
+    qtd_semana = transacoes.groupby("dia_semana").size()
     print("Maior qtd. de transações:", qtd_semana.idxmax(), qtd_semana.max())
     # Métrica 1 – volume médio por dia da semana
-    trasacoes["valor_transacao_abs"] = trasacoes["valor_transacao"].abs()
-    vol_semana = trasacoes.groupby("dia_semana")["valor_transacao_abs"].mean()
+    transacoes["valor_transacao_abs"] = transacoes["valor_transacao"].abs()
+    vol_semana = transacoes.groupby("dia_semana")["valor_transacao_abs"].mean()
     print("Maior volume médio diário:", vol_semana.idxmax(), vol_semana.max())
     
     # Métrica 2 – volume médio por mês par vs. ímpar
-    trasacoes["mes"] = trasacoes.index.month
-    vol_multiplo2 = trasacoes.groupby(trasacoes["mes"] % 2 == 0)["valor_transacao_abs"].mean()
+    transacoes["mes"] = transacoes.index.month
+    vol_multiplo2 = transacoes.groupby(transacoes["mes"] % 2 == 0)["valor_transacao_abs"].mean()
     print(f'Volume de transaçções em meses multiplo de 2 : {vol_multiplo2.iloc[1]} e não multiplo de 2 {vol_multiplo2.iloc[0]}')
     
     # Métrica 3 – volume médio por trimestre
-    vol_trim = trasacoes.groupby(trasacoes.index.quarter)["valor_transacao_abs"].mean()
+    vol_trim = transacoes.groupby(transacoes.index.quarter)["valor_transacao_abs"].mean()
     print("Maior volume trimestral:", vol_trim.idxmax(), vol_trim.max())
     
     # Métrica 4 – volume médio por hora
-    vol_hora = trasacoes.groupby(trasacoes.index.hour)["valor_transacao_abs"].mean()
+    vol_hora = transacoes.groupby(transacoes.index.hour)["valor_transacao_abs"].mean()
     
     fig, ax = plt.subplots(figsize=(15, 6))
     ax.plot(vol_hora.index, vol_hora.values, linewidth=2, color="blue", label="Média horária")
@@ -54,5 +54,5 @@ def analise_fluxo_transacoes (trasacoes,outPath):
     fig.savefig(outPath + "/objetivo3_analysisStatistics/vol_horaria.png", dpi=500)
     plt.show()
     
-    return trasacoes
+    return transacoes
      
