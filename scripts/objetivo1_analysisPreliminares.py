@@ -11,8 +11,8 @@ import matplotlib.pyplot as plt
 import matplotlib.colors as mcolors
 
 # Cores para os gráficos
-CORES = ['Azul Escuro','Verde Escuro','Vermelho',  'Amarelo','Roxo',
-         'Verde Água','Laranja','Azul Médio', 'Verde Claro','Roxo Claro']
+CORES = ["navy","seagreen","tomato", "gold", "mediumorchid",
+    "lightseagreen","coral","steelblue", "limegreen","orchid"]
 
 # Nesta função busquei analisar a evolução temporal dos dados
 def analise_evolutiva_temporal(propostas_creditos, outPath):
@@ -110,7 +110,7 @@ def analise_tendencia_agencia(propostas_creditos, outPath):
     fig.suptitle('Análise de Tendência - Proposta de Crédico por Agência')
     plt.tight_layout()
     plt.subplots_adjust(top=0.93, right=0.85)
-    plt.savefig(outPath + '/analysisPreliminares/analise_tendencia_agencia.png', dpi=500)
+    plt.savefig(outPath + '/objetivo1_analysisPreliminares/analise_tendencia_agencia.png', dpi=500)
     return fig
 #%%
 
@@ -141,7 +141,7 @@ def analise_heatmap_agencia(propostas_creditos, outPath):
     cbar.set_ticks(bounds)
     
     plt.tight_layout()
-    plt.savefig(outPath + '/analysisPreliminares/analise_heatmap_agencia.png', dpi=500)
+    plt.savefig(outPath + '/objetivo1_analysisPreliminares/analise_heatmap_agencia.png', dpi=500)
     return fig
 
 #%%
@@ -163,7 +163,7 @@ def analise_rentabilidade(propostas_creditos, outPath):
     ax.legend(loc='lower right')
     
     plt.tight_layout()
-    plt.savefig(outPath + '/analysisPreliminares/analise_rentabilidade.png', dpi=500)
+    plt.savefig(outPath + '/objetivo1_analysisPreliminares/analise_rentabilidade.png', dpi=500)
     plt.show()
     
     tabela = pd.DataFrame({
